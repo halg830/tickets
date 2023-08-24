@@ -1,3 +1,7 @@
+const data = {
+    bloqueados:[]
+}
+
 const socket = io();
 
 const txtNombre = document.querySelector("#txtNombre");
@@ -13,20 +17,26 @@ socket.on("disconnect", () => {
 });
 
 socket.on("saluden", (data) => {
-  data.element.setAttribute("disabled", "true")
+    document.querySelectorAll(".escritorios").forEach((e) => {
+        if(e.value==data.numero){
+            e.setAttribute("disabled", "true")
+        }})
 });
 
 btnIngresar.addEventListener("click", () => {
     const datos = {
-        numero: 0
+        numero: 0,
     };
 
   document.querySelectorAll(".escritorios").forEach((e) => {
     if(e.checked){
         datos.numero = parseInt(e.value)
         e.setAttribute("disabled", "true")
-        datos.element = e
+        data.bloqueados.push(e.value)
+        console.log(data.bloqueados)
+        return
     }
+
   });
 
   socket.emit("saludar", datos, (msg) => {
@@ -40,4 +50,3 @@ btnIngresar.addEventListener("click", () => {
   });
 });
  */
-function upload(files) {}
