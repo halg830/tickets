@@ -1,42 +1,43 @@
 const socket = io();
 
-const txtNombre = document.querySelector('#txtNombre')
-const btnIngresar = document.querySelector('#btnIngresar');
-const btnDia = document.querySelector('#btnDia');
+const txtNombre = document.querySelector("#txtNombre");
+const btnIngresar = document.querySelector("#btnIngresar");
+const btnDia = document.querySelector("#btnDia");
 
-socket.on('connect', () => {
-    console.log("En linea");
+socket.on("connect", () => {
+  console.log("En linea");
 });
 
-socket.on('disconnect', () => {
-    console.log('Desconectado del servidor');
+socket.on("disconnect", () => {
+  console.log("Desconectado del servidor");
 });
 
-socket.on('saluden', (data) => {
-    console.log(data);
-
+socket.on("saluden", (data) => {
+  data.element.setAttribute("disabled", "true")
 });
 
-btnIngresar.addEventListener('click', () => {
-    const mensaje = {
-        nombre: txtNombre.value,
+btnIngresar.addEventListener("click", () => {
+    const datos = {
+        numero: 0
+    };
+
+  document.querySelectorAll(".escritorios").forEach((e) => {
+    if(e.checked){
+        datos.numero = parseInt(e.value)
+        e.setAttribute("disabled", "true")
+        datos.element = e
     }
+  });
 
-    socket.emit('saludar', mensaje,(msg) => {
-
-        console.log(msg);
-    });
+  socket.emit("saludar", datos, (msg) => {
+    console.log(msg);
+  });
 });
 
-btnDia.addEventListener('click', () => {
-   
-
-    socket.emit('devuelvaFecha',(msg) => {
-
-        console.log(msg);
-    });
+/* btnDia.addEventListener("click", () => {
+  socket.emit("devuelvaFecha", (msg) => {
+    console.log(msg);
+  });
 });
-
-function upload(files) {
-
-}
+ */
+function upload(files) {}
