@@ -7,9 +7,9 @@ const controllerSockets = (socket) => {
         callback( "LLego el mensaje" );
         socket.broadcast.emit( 'saluden', mensaje);
     });
-    socket.on('devuelvaFecha',async(callback)=>{
-        callback(new Date())
-       
+    socket.on('pedir', async(num, callback)=>{
+        const bloqueado = controllersEscritorio.getBloqueados(num)
+        callback(bloqueado)
     })
 }
 

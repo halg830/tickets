@@ -1,5 +1,9 @@
 const socket = io();
 
+const data = {
+  bloqueados: 0
+}
+
 const txtNombre = document.querySelector("#txtNombre");
 const btnIngresar = document.querySelector("#btnIngresar");
 const btnDia = document.querySelector("#btnDia");
@@ -29,7 +33,6 @@ btnIngresar.addEventListener("click", () => {
     if(e.checked){
         datos.numero = e.value
         e.setAttribute("disabled", "true")
-        controllersEscritorio.postBloqueados(datos)
         console.log("datos: ", datos)
         return
     }
@@ -40,6 +43,30 @@ btnIngresar.addEventListener("click", () => {
     console.log(msg);
   });
 });
+
+const escritoriosNum = document.querySelector("#escritoriosNum");
+
+let inputs = "";
+
+for (let i = 1; i <= 5; i++) {
+
+  socket.emit("pedir", i, (num)=>{
+    console.log(data)
+    if(num) data.bloqueados.push(num)
+  })
+
+  const bloqueados = data.bloqueados
+
+  if (bloqueados || bloqueados==0) {
+    inputs += `<label for=""><input type="radio" name="escritorios" value="${i}" class="escritorios" disabled>${i}</label>`;
+    continue;
+  }
+
+  inputs += `<label for=""><input type="radio" name="escritorios" value="${i}" class="escritorios">${i}</label>`;
+}
+
+escritoriosNum.innerHTML = inputs;
+
 
 /* btnDia.addEventListener("click", () => {
   socket.emit("devuelvaFecha", (msg) => {
