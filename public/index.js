@@ -1,7 +1,3 @@
-const data = {
-    bloqueados:[]
-}
-
 const socket = io();
 
 const txtNombre = document.querySelector("#txtNombre");
@@ -17,6 +13,7 @@ socket.on("disconnect", () => {
 });
 
 socket.on("saluden", (data) => {
+    
     document.querySelectorAll(".escritorios").forEach((e) => {
         if(e.value==data.numero){
             e.setAttribute("disabled", "true")
@@ -25,15 +22,15 @@ socket.on("saluden", (data) => {
 
 btnIngresar.addEventListener("click", () => {
     const datos = {
-        numero: 0,
+        "numero": "0",
     };
 
   document.querySelectorAll(".escritorios").forEach((e) => {
     if(e.checked){
-        datos.numero = parseInt(e.value)
+        datos.numero = e.value
         e.setAttribute("disabled", "true")
-        data.bloqueados.push(e.value)
-        console.log(data.bloqueados)
+        controllersEscritorio.postBloqueados(datos)
+        console.log("datos: ", datos)
         return
     }
 

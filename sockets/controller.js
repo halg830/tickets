@@ -1,3 +1,5 @@
+import controllersEscritorio from "../controllers/Escritorio.js";
+
 const controllerSockets = (socket) => {
     console.log(socket.id);
 
