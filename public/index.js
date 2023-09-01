@@ -1,6 +1,4 @@
-const data = {
-    bloqueados:[]
-}
+
 
 const socket = io();
 
@@ -32,8 +30,8 @@ btnIngresar.addEventListener("click", () => {
     if(e.checked){
         datos.numero = parseInt(e.value)
         e.setAttribute("disabled", "true")
-        data.bloqueados.push(e.value)
-        console.log(data.bloqueados)
+        // Data.push(e.value)
+        // console.log(Data)
         return
     }
 
