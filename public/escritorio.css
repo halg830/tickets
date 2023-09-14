@@ -81,3 +81,17 @@ body{
   background-color: rgb(255, 0, 0);
   border-radius: 100px 0px 0px 20px;
 }
+
+.botonatender{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#buto{
+  width: 100%;
+}
+
+#buto:hover{
+  cursor: pointer;
+}
