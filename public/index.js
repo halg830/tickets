@@ -11,7 +11,7 @@ const btnFormatear = document.querySelector("#btnFormatear")
 
 btnFormatear.addEventListener("click", ()=>{
   socket.emit("formatear", ()=>{
-    console.log("listo socio")
+    
   })
 })
 
@@ -48,7 +48,6 @@ btnIngresar.addEventListener("click", () => {
   });
 
   if (datos.numero != "0") {
-    // Almacenar el número en localStorage
     localStorage.setItem('numero', datos.numero);
 
 

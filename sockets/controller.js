@@ -22,6 +22,11 @@ const controllerSockets = (socket) => {
             
         })
     })
+
+    socket.on("nuevoTicket", async(num, callback)=>{
+        callback("hola")
+        socket.broadcast.emit("informarTicket", num)
+    })
 }
 
 export default controllerSockets
