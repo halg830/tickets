@@ -1,4 +1,5 @@
 import Escritorio from "../models/Escritorio.js";
+import mongoose from "mongoose";
 
 const controllersEscritorio = {
   getBloqueados: async (req, res) => {
@@ -24,6 +25,15 @@ const controllersEscritorio = {
         console.log(error)
         
     }
+  },
+
+  deleteBloqueados: async(res)=>{
+    try {
+      await Escritorio.deleteMany({});
+      
+    } catch (error) {
+      console.log(error)
+    } 
   }
 };
 
