@@ -1,8 +1,8 @@
 const socket = io();
 
 const data = {
-  bloqueados: 0
-}
+  bloqueados: [],
+};
 
 const txtNombre = document.querySelector("#txtNombre");
 const btnIngresar = document.querySelector("#btnIngresar");
@@ -17,57 +17,79 @@ socket.on("disconnect", () => {
 });
 
 socket.on("saluden", (data) => {
-    
-    document.querySelectorAll(".escritorios").forEach((e) => {
-        if(e.value==data.numero){
-            e.setAttribute("disabled", "true")
-        }})
+  document.querySelectorAll(".escritorios").forEach((e) => {
+    if (e.value == data.numero) {
+      e.setAttribute("disabled", "true");
+    }
+  });
 });
 
 btnIngresar.addEventListener("click", () => {
-    const datos = {
-        "numero": "0",
-    };
+  const datos = {
+    numero: "0",
+  };
 
   document.querySelectorAll(".escritorios").forEach((e) => {
-    if(e.checked){
-        datos.numero = e.value
-        e.setAttribute("disabled", "true")
-        data.bloqueados.push(e.value)
-        console.log(data.bloqueados)
-        return
+    if (e.checked) {
+      console.log(e.value);
+      datos.numero = e.value;
+      e.setAttribute("disabled", "true");
+      data.bloqueados.push(e.value);
+      console.log(data.bloqueados);
+      return;
     }
-
   });
 
-  socket.emit("saludar", datos, (msg) => {
-    console.log(msg);
-  });
+  if (datos.numero != "0") {
+    socket.emit("saludar", datos, (msg) => {
+      console.log(msg);
+    });  
+  }
 });
 
 const escritoriosNum = document.querySelector("#escritoriosNum");
 
-let inputs = "";
+const promesas = [];
 
 for (let i = 1; i <= 5; i++) {
+  const buscarNumero = () => {
+    return new Promise((resolve, reject) => {
+      socket.emit("pedir", i, (res) => {
+        if (res[0].numero > 0) {
+          resolve(res[0].numero);
+        } else {
+          resolve(null);
+        }
+      });
+    });
+  };
 
-  socket.emit("pedir", i, (num)=>{
-    console.log(data)
-    if(num) data.bloqueados.push(num)
-  })
+  promesas.push(
+    buscarNumero()
+      .then((bloqueados) => {
+        console.log("bloqueados", bloqueados);
 
-  const bloqueados = data.bloqueados
-
-  if (bloqueados || bloqueados==0) {
-    inputs += `<label for=""><input type="radio" name="escritorios" value="${i}" class="escritorios" disabled>${i}</label>`;
-    continue;
-  }
-
-  inputs += `<label for=""><input type="radio" name="escritorios" value="${i}" class="escritorios">${i}</label>`;
+        if (bloqueados !== null) {
+          return `<label for=""><input type="radio" name="escritorios" value="${i}" class="escritorios" disabled>${i}</label>`;
+        } else {
+          return `<label for=""><input type="radio" name="escritorios" value="${i}" class="escritorios">${i}</label>`;
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        return ""; // Devuelve una cadena vacía en caso de error
+      })
+  );
 }
 
-escritoriosNum.innerHTML = inputs;
-
+Promise.all(promesas)
+  .then((resultados) => {
+    const contenido = resultados.join(""); // Concatena todos los resultados
+    escritoriosNum.innerHTML = contenido;
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 
 /* btnDia.addEventListener("click", () => {
   socket.emit("devuelvaFecha", (msg) => {
