@@ -16,6 +16,12 @@ const controllerSockets = (socket) => {
         })
         
     })
+
+    socket.on("formatear", async(callback)=>{
+        controllersEscritorio.deleteBloqueados(()=>{
+            
+        })
+    })
 }
 
 export default controllerSockets
