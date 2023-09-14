@@ -3,10 +3,11 @@ import Escritorio from "../models/Escritorio.js";
 const controllersEscritorio = {
   getBloqueados: async (req, res) => {
     try {
-        const {numero} = req.body
-        const bloqueados = await Data.find(s=> s.bloqueados==numero)
+      const numero = req
+        const bloqueados = await Escritorio.find({numero:numero})
 
-        res.json({bloqueados})
+        if(bloqueados.length>0) res(bloqueados)
+        else res([{numero: 0}])
     } catch (error) {
         console.log(error)
     }
@@ -14,11 +15,11 @@ const controllersEscritorio = {
 
   postBloqueados: async(req, res)=>{
     try {
-        const {numero} = req.body
+        const numero = req
         const escritorio = new Escritorio({numero})
         await escritorio.save()
 
-        res.json({escritorio})
+        res(escritorio)
     } catch (error) {
         console.log(error)
         
