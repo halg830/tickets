@@ -77,14 +77,14 @@ for (let i = 1; i <= 5; i++) {
       })
       .catch((error) => {
         console.error(error);
-        return ""; // Devuelve una cadena vacía en caso de error
+        return ""; 
       })
   );
 }
 
 Promise.all(promesas)
   .then((resultados) => {
-    const contenido = resultados.join(""); // Concatena todos los resultados
+    const contenido = resultados.join(""); 
     escritoriosNum.innerHTML = contenido;
   })
   .catch((error) => {
