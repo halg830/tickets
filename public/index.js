@@ -7,6 +7,13 @@ const data = {
 const txtNombre = document.querySelector("#txtNombre");
 const btnIngresar = document.querySelector("#btnIngresar");
 const btnDia = document.querySelector("#btnDia");
+const btnFormatear = document.querySelector("#btnFormatear")
+
+btnFormatear.addEventListener("click", ()=>{
+  socket.emit("formatear", ()=>{
+    
+  })
+})
 
 socket.on("connect", () => {
   console.log("En linea");
@@ -41,6 +48,9 @@ btnIngresar.addEventListener("click", () => {
   });
 
   if (datos.numero != "0") {
+    localStorage.setItem('numero', datos.numero);
+
+
     socket.emit("saludar", datos, (msg) => {
       console.log(msg);
     });  
@@ -52,10 +62,16 @@ const escritoriosNum = document.querySelector("#escritoriosNum");
 const promesas = [];
 
 for (let i = 1; i <= 5; i++) {
+  
   const buscarNumero = () => {
+    
     return new Promise((resolve, reject) => {
+      
       socket.emit("pedir", i, (res) => {
+        console.log("hola")
+        console.log("res", res[0].numero)
         if (res[0].numero > 0) {
+          console.log("res", res[0].numero)
           resolve(res[0].numero);
         } else {
           resolve(null);
@@ -90,7 +106,6 @@ Promise.all(promesas)
   .catch((error) => {
     console.error(error);
   });
-
 /* btnDia.addEventListener("click", () => {
   socket.emit("devuelvaFecha", (msg) => {
     console.log(msg);

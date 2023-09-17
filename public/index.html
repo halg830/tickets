@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
-</head>
+    <link rel="stylesheet" href="./index.css" />
+  </head>
 
-<body>
-    <div>
-        <div>
-            <h1>Opciones</h1>
-            <input type="button" value="Pantalla">
-            <input type="button" value="Generar ticket">
-        </div>
-        <div>
-            <h1>Nuevo escritorio</h1>
-            <div id="escritoriosNum"></div>           
-            <input type="button" value="Ingresar" id="btnIngresar">
-        </div>
+  <body>
+    <div id="contenedor1">
+      <h1>Nuevo escritorio</h1>
+      <div id="escritoriosNum"></div>
+      <a href="./escritorio.html"
+        ><input type="button" value="Ingresar" id="btnIngresar"
+      /></a>
+    </div>
+    <div id="contenedor2">
+      <h1>Opciones</h1>
+      <input type="button" value="Pantalla" />
+      <input type="button" value="Generar ticket" />
+      <button id="btnFormatear">formatear</button>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="./index.js"></script>
     <script type="module" src="./home.js"></script>
-</body>
-
+  </body>
 </html>
