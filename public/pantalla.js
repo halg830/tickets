@@ -1,32 +1,42 @@
 const socket = io();
 
 const div = document.querySelector("#contNumeros");
-let ticket = 0
+let tickets = []
 
 socket.on("connect", () => {
   console.log("En linea");
 });
 
-socket.on("informarTicket", (num) => {
-   ticket = num
+socket.emit("getTicketsAtendiendo",(res)=>{
+  res.forEach(n=>{
+    tickets.push(n.numero)
+  })
+
+  actualizarNumeros()
+
+  if(tickets.length<=0) msgTicketsVacios()
+})
+
+socket.on("informarAtender", (num) => {
+   tickets.unshift(num[0])
   actualizarNumeros()
 });
 
 function actualizarNumeros (){
     div.innerHTML=""
     let fragment = document.createDocumentFragment();
-    let contador = 0;
-    let numero = ticket+1
+    tickets.sort((a,b)=>b-a)
 
-    for (let i = 0; i < 4; i++) {
-      if (contador == 4 || numero<=1) break;
-      else contador += 1;
-  
-      const h1 = document.createElement("h1");
-  
-      numero -= 1;
-      h1.textContent = numero;
-      fragment.appendChild(h1);
-    }
+    tickets.forEach((t, i)=>{
+      if(i<4){
+        const h1 = document.createElement("h1");
+
+        h1.textContent = t;
+        fragment.appendChild(h1);
+      }else{
+        socket.emit("deleteTicket", t)
+      }
+    })
+    console.log(tickets)
     div.appendChild(fragment);
   };

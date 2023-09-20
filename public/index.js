@@ -48,8 +48,7 @@ btnIngresar.addEventListener("click", () => {
   });
 
   if (datos.numero != "0") {
-    localStorage.setItem('numero', datos.numero);
-
+    sessionStorage.setItem('numero', datos.numero);
 
     socket.emit("saludar", datos, (msg) => {
       console.log(msg);
@@ -106,9 +105,5 @@ Promise.all(promesas)
   .catch((error) => {
     console.error(error);
   });
-/* btnDia.addEventListener("click", () => {
-  socket.emit("devuelvaFecha", (msg) => {
-    console.log(msg);
-  });
-});
- */
+
+

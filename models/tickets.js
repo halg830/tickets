@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema
 
 const ticket = new Schema({
-    numero: {type:Number, default: 0, unique: true}
+    numero: {type:Number, require:true, unique: true},
+    estado: {type:String, require:true}
 })
 
-export default mongoose.model("escritorio", ticket)
+export default mongoose.model("Ticket", ticket)
