@@ -60,8 +60,8 @@ const controllersTicket = {
   },
 
   putAtender: async(req, res)=>{
-    const numero = req
-    await Ticket.updateOne({numero},{estado:"atendiendo"}, {new:true})
+    const {numero, escritorio} = req
+    await Ticket.updateOne({numero},{estado:"atendiendo", escritorio}, {new:true})
     res("Actualizado")
   },
 

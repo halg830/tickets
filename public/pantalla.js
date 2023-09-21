@@ -40,3 +40,11 @@ function actualizarNumeros (){
     console.log(tickets)
     div.appendChild(fragment);
   };
+
+function msgTicketsVacios(){
+    const txtTicketVacio = document.createElement("h1")
+
+    txtTicketVacio.textContent = "Por favor genere un ticket"
+
+    div.appendChild(txtTicketVacio)
+}

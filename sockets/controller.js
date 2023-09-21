@@ -48,11 +48,11 @@ const controllerSockets = (socket) => {
   });
 
   //Put
-  socket.on("putAtender", async(num, callback)=>{
-    controllersTicket.putAtender(num, (msg)=>{
+  socket.on("putAtender", async(ticket, callback)=>{
+    controllersTicket.putAtender(ticket, (msg)=>{
       callback(msg)
     })
-    socket.broadcast.emit("informarAtender", num)
+    socket.broadcast.emit("informarAtender", ticket.numero)
   })
 
   //Delete
