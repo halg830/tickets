@@ -6,12 +6,21 @@ const btnAtender = document.querySelector("#buto");
 const txtAtendiendo = document.querySelector("#txtAtendiendo");
 
 const numero = sessionStorage.getItem("numero");
+
 txtNumero.textContent = numero;
 
 let tickets = [];
+let id = ""
+
+
 
 document.addEventListener("DOMContentLoaded", () => {
   txtAtendiendo.textContent = sessionStorage.getItem("ticketAtendiendo");
+});
+
+socket.emit("getIdEscritorio", numero, (res) => {
+  console.log("res",res);
+  id= res._id
 });
 
 socket.on("connect", () => {
@@ -49,17 +58,18 @@ btnAtender.addEventListener("click", () => {
     msgTicketsVacios();
     return;
   }
-  const ticket = { numero: tickets.splice(0, 1), id: ()=>{
-    socket.emit("getIdEscritorio", (id)=>{
-console.log(id)
-    })
-  }};
+  console.log(id)
+  const ticket = {
+    numero: tickets.splice(0, 1),
+    escritorio: id
+  };
+  console.log(ticket)
 
-  socket.emit("putAtender", num, (res) => {
+  socket.emit("putAtender", ticket, (res) => {
     console.log(res);
   });
 
-  sessionStorage.setItem("ticketAtendiendo", num);
+  sessionStorage.setItem("ticketAtendiendo", ticket.numero);
   txtAtendiendo.textContent = sessionStorage.getItem("ticketAtendiendo");
   actualizarNumeros();
 });
@@ -72,7 +82,7 @@ function actualizarNumeros() {
     const h1 = document.createElement("h1");
 
     h1.textContent = n;
-    h1.setAttribute("class", "numCola")
+    h1.setAttribute("class", "numCola");
     fragment.appendChild(h1);
   });
   div.appendChild(fragment);

@@ -1,4 +1,5 @@
 import Ticket from "../models/tickets.js";
+import Escritorio from "../models/Escritorio.js";
 
 const controllersTicket = {
   getTicket: async (res) => {
@@ -39,6 +40,16 @@ const controllersTicket = {
       console.log(error);
     }
   },
+  
+  getNumeroEscritorio: async (req, res) => {
+    try {
+      const ticket = await Ticket.findById(req).populate("escritorio").exec()
+
+      res(ticket)
+    } catch (error) {
+      console.log(error);
+    }
+  },
 
   postTicket: async (req, res) => {
     try {
@@ -73,6 +84,7 @@ const controllersTicket = {
     try {
       const numero = req
         await Ticket.deleteOne({numero})
+        return
     } catch (error) {
         console.log(error)
     }

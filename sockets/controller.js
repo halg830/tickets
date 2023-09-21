@@ -39,6 +39,18 @@ const controllerSockets = (socket) => {
     })
   })
 
+  socket.on("getIdEscritorio", async(numero, callback)=>{
+    controllersEscritorio.getIdEscritorio(numero,(res)=>{
+      callback(res)
+    })
+  })
+
+  socket.on("getNumEscritorio", async(id, callback)=>{
+    controllersTicket.getNumeroEscritorio(id, (res)=>{
+      callback(res)
+    })
+  })
+
   //Post
   socket.on("nuevoTicket", async (ticket, callback) => {
     controllersTicket.postTicket(ticket, (msg)=>{
@@ -52,12 +64,12 @@ const controllerSockets = (socket) => {
     controllersTicket.putAtender(ticket, (msg)=>{
       callback(msg)
     })
-    socket.broadcast.emit("informarAtender", ticket.numero)
+    socket.broadcast.emit("informarAtender", ticket)
   })
 
   //Delete
   socket.on("deleteTicket", async(num)=>{
-    controllersTicket.deleteTicket(num)
+    controllersTicket.deleteTicket(num,()=>{return})
   })
 };
 

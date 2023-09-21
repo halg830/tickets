@@ -14,6 +14,22 @@ const controllersEscritorio = {
     }
   },
 
+  getIdEscritorio: async(req, res)=>{
+    try {
+      const numero = String(req)
+      const id = await Escritorio.findOne({numero})
+
+      console.log(id)
+
+      res(id)
+    } catch (error) {
+      console.log(error)
+    }
+  },
+
+
+
+
   postBloqueados: async(req, res)=>{
     try {
         const numero = req

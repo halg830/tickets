@@ -7,9 +7,19 @@ socket.on("connect", () => {
   console.log("En linea");
 });
 
-socket.emit("getTicketsAtendiendo",(res)=>{
+socket.emit("getTicketsAtendiendo", (res)=>{
   res.forEach(n=>{
-    tickets.push(n.numero)
+    const ticket = {
+        id: n._id,
+        numero: [n.numero]
+    }
+
+    socket.emit("getNumEscritorio", n._id, async(res)=>{
+        ticket.id = await res.escritorio.numero
+    })
+
+    
+    tickets.push(ticket)
   })
 
   actualizarNumeros()
@@ -17,8 +27,9 @@ socket.emit("getTicketsAtendiendo",(res)=>{
   if(tickets.length<=0) msgTicketsVacios()
 })
 
-socket.on("informarAtender", (num) => {
-   tickets.unshift(num[0])
+socket.on("informarAtender", (ticket) => {
+    console.log(ticket)
+   tickets.unshift(ticket)
   actualizarNumeros()
 });
 
@@ -31,10 +42,10 @@ function actualizarNumeros (){
       if(i<4){
         const h1 = document.createElement("h1");
 
-        h1.textContent = t;
+        h1.textContent = `${t.numero[0] || t.numero} en el escritorio ${t.id}`;
         fragment.appendChild(h1);
       }else{
-        socket.emit("deleteTicket", t)
+        socket.emit("deleteTicket", t.numero[0]||t.numero)
       }
     })
     console.log(tickets)
@@ -47,4 +58,8 @@ function msgTicketsVacios(){
     txtTicketVacio.textContent = "Por favor genere un ticket"
 
     div.appendChild(txtTicketVacio)
+}
+
+async function solicitarNumero(){
+    
 }
