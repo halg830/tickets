@@ -5,23 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home</title>
     <link rel="stylesheet" href="./index.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lobster&family=Press+Start+2P&family=Roboto:ital,wght@0,100;1,100&display=swap"
+      rel="stylesheet"
+    />
   </head>
 
   <body>
     <div id="contenedor1">
-      <h1>Nuevo escritorio</h1>
-      <div id="escritoriosNum"></div>
-      <a href="./escritorio.html"
-        ><input type="button" value="Ingresar" id="btnIngresar"
-      /></a>
+      <div class="num1">      
+        <h1 class="titulo1">Nuevo escritorio</h1>
+        <div id="escritoriosNum"></div>
+        <div class="buto"><a class="hola" href="./escritorio.html"><input type="button" value="Ingresar" id="btnIngresar"/></a></div>
+      </div>
     </div>
     <div id="contenedor2">
-      <h1>Opciones</h1>
-      <a href="./pantalla.html"><input type="button" value="Pantalla" /></a>
-      <a href="./generarTicket.html"
-        ><input type="button" value="Generar ticket"
-      /></a>
-      <button id="btnFormatear">formatear</button>
+      <div class="opc"><h1 class="titulo2">Opciones</h1></div>
+      <div class="butones">      
+        <a class="antes" href="./pantalla.html"><input class="botones3" type="button" value="Pantalla" /></a>
+        <a class="antes" href="./generarTicket.html"><input class="botones3" type="button" value="Generar ticket"/></a>
+        <button class="botones3" id="btnFormatear">formatear</button></div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script type="module" src="./index.js"></script>
