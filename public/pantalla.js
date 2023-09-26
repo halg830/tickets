@@ -9,6 +9,7 @@ socket.on("connect", () => {
 
 socket.emit("getTicketsAtendiendo", (res)=>{
   res.forEach(n=>{
+    console.log("n", n)
     const ticket = {
         id: n._id,
         numero: [n.numero]
@@ -28,7 +29,10 @@ socket.emit("getTicketsAtendiendo", (res)=>{
 })
 
 socket.on("informarAtender", (ticket) => {
-    console.log(ticket)
+  socket.emit("getNumEscritorio", ticket.id, async(res)=>{
+    // ticket.id = await res.escritorio.numero
+})
+
    tickets.unshift(ticket)
   actualizarNumeros()
 });
@@ -37,16 +41,18 @@ function actualizarNumeros (){
     div.innerHTML=""
     let fragment = document.createDocumentFragment();
     tickets.sort((a,b)=>b-a)
-
+console.log("t", tickets)
     tickets.forEach((t, i)=>{
       if(i<4){
         const h1 = document.createElement("h1");
-
+console.log(t.id)
         h1.textContent = `${t.numero[0] || t.numero} en el escritorio ${t.id}`;
         fragment.appendChild(h1);
       }else{
         socket.emit("deleteTicket", t.numero[0]||t.numero)
       }
+
+      
     })
     console.log(tickets)
     div.appendChild(fragment);

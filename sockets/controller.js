@@ -51,6 +51,10 @@ const controllerSockets = (socket) => {
     })
   })
 
+  socket.on("getEscritorioTicket", async(id, callback)=>{
+    
+  })
+
   //Post
   socket.on("nuevoTicket", async (ticket, callback) => {
     controllersTicket.postTicket(ticket, (msg)=>{

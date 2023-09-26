@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   txtAtendiendo.textContent = sessionStorage.getItem("ticketAtendiendo");
 });
 
-socket.emit("getIdEscritorio", numero, (res) => {
+socket.emit("getIdTicket", numero, (res) => {
   console.log("res",res);
   id= res._id
 });
@@ -30,7 +30,7 @@ socket.on("connect", () => {
 socket.emit("getAllTickets", (res) => {
   console.log(res);
   res.forEach((n) => {
-    tickets.push(n.numero);
+    tickets.push(n);
   });
 
   actualizarNumeros();
@@ -58,14 +58,12 @@ btnAtender.addEventListener("click", () => {
     msgTicketsVacios();
     return;
   }
-  console.log(id)
-  const ticket = {
-    numero: tickets.splice(0, 1),
-    escritorio: id
-  };
-  console.log(ticket)
+  
+  const ticketAtendiendo = tickets.splice(0, 1)
 
-  socket.emit("putAtender", ticket, (res) => {
+  console.log(ticketAtendiendo)
+
+  socket.emit("putAtender", ticketAtendiendo, (res) => {
     console.log(res);
   });
 
@@ -81,7 +79,7 @@ function actualizarNumeros() {
   tickets.forEach((n) => {
     const h1 = document.createElement("h1");
 
-    h1.textContent = n;
+    h1.textContent = n.numero;
     h1.setAttribute("class", "numCola");
     fragment.appendChild(h1);
   });

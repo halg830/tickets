@@ -1,5 +1,6 @@
 import Ticket from "../models/tickets.js";
 import Escritorio from "../models/Escritorio.js";
+import mongoose from "mongoose";
 
 const controllersTicket = {
   getTicket: async (res) => {
@@ -43,7 +44,9 @@ const controllersTicket = {
   
   getNumeroEscritorio: async (req, res) => {
     try {
-      const ticket = await Ticket.findById(req).populate("escritorio").exec()
+      const id = new mongoose.Types.ObjectId(req);
+      const ticket = await Ticket.findById(id).populate("escritorio").exec()
+      console.log("ticke",ticket)
 
       res(ticket)
     } catch (error) {
