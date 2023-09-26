@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   txtAtendiendo.textContent = sessionStorage.getItem("ticketAtendiendo");
 });
 
-socket.emit("getIdTicket", numero, (res) => {
+socket.emit("getIdEscritorio", numero, (res) => {
   console.log("res",res);
   id= res._id
 });
@@ -44,7 +44,7 @@ socket.on("informarTicket", (num) => {
 });
 
 socket.on("informarAtender", (num) => {
-  console.log(num);
+  console.log("num", num);
   const index = tickets.findIndex((n) => n === num[0]);
   console.log(index);
   if (index == -1) return;
@@ -59,7 +59,8 @@ btnAtender.addEventListener("click", () => {
     return;
   }
   
-  const ticketAtendiendo = tickets.splice(0, 1)
+  let ticketAtendiendo = tickets.splice(0, 1)
+  ticketAtendiendo = {...ticketAtendiendo[0], escritorio: id}
 
   console.log(ticketAtendiendo)
 
@@ -67,7 +68,7 @@ btnAtender.addEventListener("click", () => {
     console.log(res);
   });
 
-  sessionStorage.setItem("ticketAtendiendo", ticket.numero);
+  sessionStorage.setItem("ticketAtendiendo", ticketAtendiendo.numero);
   txtAtendiendo.textContent = sessionStorage.getItem("ticketAtendiendo");
   actualizarNumeros();
 });

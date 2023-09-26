@@ -1,71 +1,66 @@
 const socket = io();
 
 const div = document.querySelector("#contNumeros");
-let tickets = []
+let tickets = [];
 
 socket.on("connect", () => {
   console.log("En linea");
 });
 
-socket.emit("getTicketsAtendiendo", (res)=>{
-  res.forEach(n=>{
-    console.log("n", n)
-    const ticket = {
-        id: n._id,
-        numero: [n.numero]
-    }
+socket.emit("getTicketsAtendiendo", (res) => {
+  res.forEach((n) => {
+    console.log("n", n);
+    let ticket = {};
 
-    socket.emit("getNumEscritorio", n._id, async(res)=>{
-        ticket.id = await res.escritorio.numero
-    })
+    socket.emit("getNumEscritorio", n._id, async (res) => {
+      console.log("res", res);
+      ticket = await res;
+    });
 
-    
-    tickets.push(ticket)
-  })
+    tickets.push(ticket);
+    console.log("ts", tickets)
+  });
 
-  actualizarNumeros()
+  actualizarNumeros();
 
-  if(tickets.length<=0) msgTicketsVacios()
-})
-
-socket.on("informarAtender", (ticket) => {
-  socket.emit("getNumEscritorio", ticket.id, async(res)=>{
-    // ticket.id = await res.escritorio.numero
-})
-
-   tickets.unshift(ticket)
-  actualizarNumeros()
+  if (tickets.length <= 0) msgTicketsVacios();
 });
 
-function actualizarNumeros (){
-    div.innerHTML=""
-    let fragment = document.createDocumentFragment();
-    tickets.sort((a,b)=>b-a)
-console.log("t", tickets)
-    tickets.forEach((t, i)=>{
-      if(i<4){
-        const h1 = document.createElement("h1");
-console.log(t.id)
-        h1.textContent = `${t.numero[0] || t.numero} en el escritorio ${t.id}`;
-        fragment.appendChild(h1);
-      }else{
-        socket.emit("deleteTicket", t.numero[0]||t.numero)
-      }
+socket.on("informarAtender", (ticket) => {
+  socket.emit("getNumEscritorio", ticket.id, async (res) => {
+    console.log(res);
+    ticket.id = await res.escritorio.numero;
+  });
 
-      
-    })
-    console.log(tickets)
-    div.appendChild(fragment);
-  };
+  tickets.unshift(ticket);
+  actualizarNumeros();
+});
 
-function msgTicketsVacios(){
-    const txtTicketVacio = document.createElement("h1")
+function actualizarNumeros() {
+  div.innerHTML = "";
+  let fragment = document.createDocumentFragment();
+  tickets.sort((a, b) => b - a);
+  console.log("t", tickets);
+  tickets.forEach((t, i) => {
+    if (i < 4) {
+      const h1 = document.createElement("h1");
 
-    txtTicketVacio.textContent = "Por favor genere un ticket"
-
-    div.appendChild(txtTicketVacio)
+      h1.textContent = `${t.numero[0] || t.numero} en el escritorio ${t.escritorio.numero}`;
+      fragment.appendChild(h1);
+    } else {
+      socket.emit("deleteTicket", t.numero[0] || t.numero);
+    }
+  });
+  console.log(tickets);
+  div.appendChild(fragment);
 }
 
-async function solicitarNumero(){
-    
+function msgTicketsVacios() {
+  const txtTicketVacio = document.createElement("h1");
+
+  txtTicketVacio.textContent = "Por favor genere un ticket";
+
+  div.appendChild(txtTicketVacio);
 }
+
+async function solicitarNumero() {}

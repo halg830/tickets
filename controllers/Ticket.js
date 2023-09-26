@@ -44,7 +44,8 @@ const controllersTicket = {
   
   getNumeroEscritorio: async (req, res) => {
     try {
-      const id = new mongoose.Types.ObjectId(req);
+      const id = req
+      // const id = new mongoose.Types.ObjectId(req);
       const ticket = await Ticket.findById(id).populate("escritorio").exec()
       console.log("ticke",ticket)
 
@@ -74,6 +75,7 @@ const controllersTicket = {
   },
 
   putAtender: async(req, res)=>{
+    console.log(req)
     const {numero, escritorio} = req
     await Ticket.updateOne({numero},{estado:"atendiendo", escritorio}, {new:true})
     res("Actualizado")
