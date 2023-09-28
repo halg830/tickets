@@ -7,19 +7,22 @@ socket.on("connect", () => {
   console.log("En linea");
 });
 
-socket.emit("getTicketsAtendiendo", (res) => {
-  res.forEach((n) => {
+socket.emit("getTicketsAtendiendo", async (res) => {
+  await res.forEach((n) => {
     console.log("n", n);
     let ticket = {};
 
     socket.emit("getNumEscritorio", n._id, async (res) => {
       console.log("res", res);
       ticket = await res;
+      tickets.push(ticket);
     });
 
-    tickets.push(ticket);
+    
     console.log("ts", tickets)
   });
+
+  console.log("hola");
 
   actualizarNumeros();
 
@@ -44,6 +47,7 @@ function actualizarNumeros() {
   tickets.forEach((t, i) => {
     if (i < 4) {
       const h1 = document.createElement("h1");
+      console.log("a",t)
 
       h1.textContent = `${t.numero[0] || t.numero} en el escritorio ${t.escritorio.numero}`;
       fragment.appendChild(h1);
