@@ -78,15 +78,17 @@ body{
   border: 0px;
   color: rgb(0, 0, 0);
   background-color: rgb(255, 255, 255);
-  width: 100%;
+  width: 80%;
   height: 50px;
   font-size: 30px;
+  border-radius: 5px;
 }
 
 #buto:hover{
   cursor: pointer;
   background-color: blue;
   color: white;
+  box-shadow: 0px 0px 10px 0px red;
 }
 
 .titulo2{
