@@ -33,6 +33,7 @@ socket.on("informarAtender", async(ticket) => {
   socket.emit("getNumEscritorio", ticket._id, async (res) => {
 
     const ticketInfo = await res
+    console.log(ticketInfo);
     tickets.unshift(ticketInfo);
     console.log(tickets)
     actualizarNumeros();

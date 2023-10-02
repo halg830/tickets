@@ -50,7 +50,7 @@ socket.on("informarTicket", async(num) => {
 
 socket.on("informarAtender", (num) => {
   console.log("num", num);
-  const index = tickets.findIndex((n) => n === num[0]);
+  const index = tickets.findIndex((n) => n.numero === num.numero);
   console.log(index);
   if (index == -1) return;
 
