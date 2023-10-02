@@ -10,17 +10,15 @@ const numero = sessionStorage.getItem("numero");
 txtNumero.textContent = numero;
 
 let tickets = [];
-let id = ""
-
-
+let id = "";
 
 document.addEventListener("DOMContentLoaded", () => {
   txtAtendiendo.textContent = sessionStorage.getItem("ticketAtendiendo");
 });
 
 socket.emit("getIdEscritorio", numero, (res) => {
-  console.log("res",res);
-  id= res._id
+  console.log("res", res);
+  id = res._id;
 });
 
 socket.on("connect", () => {
@@ -38,8 +36,15 @@ socket.emit("getAllTickets", (res) => {
   if (tickets.length <= 0) msgTicketsVacios();
 });
 
-socket.on("informarTicket", (num) => {
-  tickets.push(num);
+socket.on("informarTicket", async(num) => {
+  const ticket = await new Promise((resolve) => {
+    socket.emit("getTicketInformar", num, async (res) => {
+      const ticket = await res;
+      resolve(ticket);
+    });
+  });
+
+  tickets.push(ticket);
   actualizarNumeros();
 });
 
@@ -58,11 +63,11 @@ btnAtender.addEventListener("click", () => {
     msgTicketsVacios();
     return;
   }
-  
-  let ticketAtendiendo = tickets.splice(0, 1)
-  ticketAtendiendo = {...ticketAtendiendo[0], escritorio: id}
 
-  console.log(ticketAtendiendo)
+  let ticketAtendiendo = tickets.splice(0, 1);
+  ticketAtendiendo = { ...ticketAtendiendo[0], escritorio: id };
+
+  console.log(ticketAtendiendo);
 
   socket.emit("putAtender", ticketAtendiendo, (res) => {
     console.log(res);

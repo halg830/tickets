@@ -56,6 +56,17 @@ const controllersTicket = {
     }
   },
 
+  getTicketInformar: async(req, res)=>{
+    try {
+      const numero = req
+      const ticket = await Ticket.findOne({numero})
+      console.log(ticket);
+      res(ticket)
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   postTicket: async (req, res) => {
     try {
         const estados=["pendiente", "atendiendo", "finalizado"]
