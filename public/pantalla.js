@@ -8,35 +8,35 @@ socket.on("connect", () => {
 });
 
 socket.emit("getTicketsAtendiendo", async (res) => {
-  await res.forEach((n) => {
-    console.log("n", n);
-    let ticket = {};
+  console.log("1",res);
+  const ticketPromesas = res.map((ticketId)=>{
+    return new Promise((resolve)=>{
+      socket.emit("getNumEscritorio", ticketId, async(res)=>{
+        const ticket = await res
+        resolve(ticket)
+      })
+    })
+  })
 
-    socket.emit("getNumEscritorio", n._id, async (res) => {
-      console.log("res", res);
-      ticket = await res;
-      tickets.push(ticket);
-    });
+  const ticketResultados = await Promise.all(ticketPromesas)
+  ticketResultados.sort((a,b)=>b.numero-a.numero)
 
-    
-    console.log("ts", tickets)
-  });
-
-  console.log("hola");
+  tickets = ticketResultados
 
   actualizarNumeros();
 
   if (tickets.length <= 0) msgTicketsVacios();
 });
 
-socket.on("informarAtender", (ticket) => {
-  socket.emit("getNumEscritorio", ticket.id, async (res) => {
-    console.log(res);
-    ticket.id = await res.escritorio.numero;
-  });
+socket.on("informarAtender", async(ticket) => {
+  console.log("i",ticket);
+  socket.emit("getNumEscritorio", ticket._id, async (res) => {
 
-  tickets.unshift(ticket);
-  actualizarNumeros();
+    const ticketInfo = await res
+    tickets.unshift(ticketInfo);
+    console.log(tickets)
+    actualizarNumeros();
+  }); 
 });
 
 function actualizarNumeros() {
@@ -52,6 +52,7 @@ function actualizarNumeros() {
       h1.textContent = `${t.numero[0] || t.numero} en el escritorio ${t.escritorio.numero}`;
       fragment.appendChild(h1);
     } else {
+      console.log("d", t)
       socket.emit("deleteTicket", t.numero[0] || t.numero);
     }
   });

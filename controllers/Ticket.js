@@ -36,6 +36,7 @@ const controllersTicket = {
   getTicketsAtendiendo: async(res)=>{
     try {
       const tickets = await Ticket.find({estado: "atendiendo"})
+      console.log(tickets);
       res(tickets)
     } catch (error) {
       console.log(error);
@@ -78,7 +79,9 @@ const controllersTicket = {
     console.log(req)
     const {numero, escritorio} = req
     await Ticket.updateOne({numero},{estado:"atendiendo", escritorio}, {new:true})
-    res("Actualizado")
+
+    const atendido = await Ticket.find({estado:"atendiendo"})
+    res(atendido)
   },
 
   putFinalizado: async()=>{
