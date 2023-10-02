@@ -4,11 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generar ticket</title>
+    <link rel="stylesheet" href="./generarTicket.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lobster&family=Press+Start+2P&family=Roboto:ital,wght@0,100;1,100&display=swap"
+      rel="stylesheet"
+    />
 </head>
 <body>
-    <h1>Su ticket es: <h1 id="numero"></h1></h1>
-    <button id="btnGenerar">Generar ticket</button>
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="module" src="./generarTicket.js"></script>
+    <div class="contenedor">
+        <div class="contenedor2">
+            <div class="titulo"><h1>Genere un nuevo ticket<h1 id="numero"></h1></h1></div>
+            <div class="wrapper"><button id="btnGenerar">Generar ticket</button>          
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <script src="/socket.io/socket.io.js"></script>
+            <script type="module" src="./generarTicket.js"></script>
+        </div>
+    </div>
+   
 </body>
 </html>
