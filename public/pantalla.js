@@ -44,17 +44,32 @@ function actualizarNumeros() {
   let fragment = document.createDocumentFragment();
   tickets.sort((a, b) => b - a);
   console.log("t", tickets);
+  const subDiv = document.createElement("div")
+  subDiv.setAttribute("class", "Ticket1")
   tickets.forEach((t, i) => {
-    if (i < 4) {
+    if(i==0){
+      const h1 = document.createElement("h1");
+      const div = document.createElement("div")
+      console.log("a",t)
+
+      div.setAttribute("id", "Ticket2")
+      h1.textContent = `Ticket ${t.numero[0] || t.numero} en el escritorio ${t.escritorio.numero}`;
+      div.appendChild(h1)
+      fragment.appendChild(div);
+    }
+    if (i < 4 && i>0) {
       const h1 = document.createElement("h1");
       console.log("a",t)
 
-      h1.textContent = `${t.numero[0] || t.numero} en el escritorio ${t.escritorio.numero}`;
-      fragment.appendChild(h1);
+      
+      h1.textContent = `Ticket ${t.numero[0] || t.numero} en el escritorio ${t.escritorio.numero}`;
+      subDiv.appendChild(h1)
+      fragment.appendChild(subDiv);
     } else {
       console.log("d", t)
       socket.emit("deleteTicket", t.numero[0] || t.numero);
     }
+    
   });
   console.log(tickets);
   div.appendChild(fragment);
@@ -63,7 +78,8 @@ function actualizarNumeros() {
 function msgTicketsVacios() {
   const txtTicketVacio = document.createElement("h1");
 
-  txtTicketVacio.textContent = "Por favor genere un ticket";
+  txtTicketVacio.setAttribute("id", "tituloprin")
+  txtTicketVacio.textContent = "Tickets en espera";
 
   div.appendChild(txtTicketVacio);
 }
